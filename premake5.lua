@@ -16,10 +16,10 @@ project "msdf-atlas-gen"
 	files {
 		"msdf-atlas-gen/**.h",
 		"msdf-atlas-gen/**.hpp",
-		"msdf-atlas-gen/**.cpp"
+		"msdf-atlas-gen/**.cpp",
 	}
 	removefiles {
-		"src/**.vs*/**"
+		"src/**.vs*/**",
 	}
 
 	includedirs {
@@ -42,9 +42,9 @@ project "msdf-atlas-gen"
 
 	filter "configurations:Release"
 		runtime "Release"
-		optimize "on"
+		optimize "speed"
 
 	filter "configurations:Distribution"
 		runtime "Release"
-		optimize "on"
+		optimize "speed"
 		symbols "off"
