@@ -9,7 +9,6 @@ project "msdf-atlas-gen"
 	staticruntime "off"
 	systemversion "latest"
 
-
 	targetdir (binariesDir .. "/%{prj.name}")
 	objdir (binariesIntermediateDir .. "/%{prj.name}")
 
@@ -19,7 +18,7 @@ project "msdf-atlas-gen"
 		"msdf-atlas-gen/**.cpp",
 	}
 	removefiles {
-		"src/**.vs*/**",
+		"msdf-atlas-gen/**.vs*/**",
 	}
 
 	includedirs {
