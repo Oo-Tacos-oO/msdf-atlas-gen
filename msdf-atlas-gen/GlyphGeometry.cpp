@@ -51,7 +51,11 @@ void GlyphGeometry::edgeColoring(void (*fn)(msdfgen::Shape &, double, unsigned l
     fn(shape, angleThreshold, seed);
 }
 
-void GlyphGeometry::wrapBox(double scale, double range, double miterLimit) {
+void GlyphGeometry::wrapBox(double scale, double range, double miterLimit, bool alignOrigin) {
+    wrapBox(scale, range, miterLimit, alignOrigin, alignOrigin);
+}
+
+void GlyphGeometry::wrapBox(double scale, double range, double miterLimit, bool alignOriginX, bool alignOriginY) {
     scale *= geometryScale;
     range /= geometryScale;
     box.range = range;
@@ -62,12 +66,26 @@ void GlyphGeometry::wrapBox(double scale, double range, double miterLimit) {
         r += .5*range, t += .5*range;
         if (miterLimit > 0)
             shape.boundMiters(l, b, r, t, .5*range, miterLimit, 1);
-        double w = scale*(r-l);
-        double h = scale*(t-b);
-        box.rect.w = (int) ceil(w)+1;
-        box.rect.h = (int) ceil(h)+1;
-        box.translate.x = -l+.5*(box.rect.w-w)/scale;
-        box.translate.y = -b+.5*(box.rect.h-h)/scale;
+        if (alignOriginX) {
+            int sl = (int) floor(scale*l-.5);
+            int sr = (int) ceil(scale*r+.5);
+            box.rect.w = sr-sl;
+            box.translate.x = -sl/scale;
+        } else {
+            double w = scale*(r-l);
+            box.rect.w = (int) ceil(w)+1;
+            box.translate.x = -l+.5*(box.rect.w-w)/scale;
+        }
+        if (alignOriginY) {
+            int sb = (int) floor(scale*b-.5);
+            int st = (int) ceil(scale*t+.5);
+            box.rect.h = st-sb;
+            box.translate.y = -sb/scale;
+        } else {
+            double h = scale*(t-b);
+            box.rect.h = (int) ceil(h)+1;
+            box.translate.y = -b+.5*(box.rect.h-h)/scale;
+        }
     } else {
         box.rect.w = 0, box.rect.h = 0;
         box.translate = msdfgen::Vector2();
