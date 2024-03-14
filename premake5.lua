@@ -29,6 +29,10 @@ project "msdf-atlas-gen"
 
 	defines {
 		"_CRT_SECURE_NO_WARNINGS",
+		"MSDF_ATLAS_PUBLIC=",
+
+		--msdfgen
+		"MSDFGEN_PUBLIC=",
 	}
 
 	links {
